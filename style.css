@@ -59,12 +59,21 @@ button:hover{
     background-color: #02173f;
 }
 
+#loading {
+    margin-top: 10px;
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    color: #0077ff;
+}
+
 #weather-info{
     margin-top: 20px;
     text-align: center;
     justify-content: center;
     align-items: center;
 }
+
 
 .hidden{
     display: none;

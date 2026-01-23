@@ -6,21 +6,38 @@ document.addEventListener('DOMContentLoaded', () => {
     const tempDisplay = document.getElementById("temperature");
     const descriptionDisplay = document.getElementById("description");
     const errorMessage = document.getElementById("error-message");
+    const loading = document.getElementById("loading");
 
     const API_KEY = "ed915caafa10d192fdb23d538bb4bada";
 
+    const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
     getWeatherBtn.addEventListener('click', async () => {
+
         const city = cityInput.value.trim();
-        if(!city) return;
+        if (!city) return;
+
+        loading.classList.remove("hidden");
+        weatherInfo.classList.add("hidden");
+        errorMessage.classList.add("hidden");
+        getWeatherBtn.disabled = true;
 
         try {
             const weatherData = await fetchWeatherData(city);
+
+            await delay(1000);
+            
             displayWeatherData(weatherData);
+
         } catch (error) {
             showError();
-        }
 
+        } finally {
+            loading.classList.add("hidden");
+            getWeatherBtn.disabled = false;
+        }
     });
+
 
     async function fetchWeatherData(city){
         const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${API_KEY}`;
@@ -31,7 +48,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if(!response.ok){
             throw new Error("City not found");
-            
         }
         const data = await response.json();
         return data;
