@@ -1,0 +1,61 @@
+.bg-video {
+  filter: brightness(0.95) saturate(1.4);
+  transition: opacity 0.2s ease-in-out;
+}
+
+video {
+  transition: opacity 1.2s ease-in-out;
+}
+
+.fade-in {
+  opacity: 1;
+}
+
+.fade-out {
+  opacity: 0;
+}
+
+.glass-card {
+  border-radius: 24px;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(18px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+  transition: background 0.4s ease, backdrop-filter 0.4s ease;
+}
+
+video[src*="night"] ~ .glass-card {
+  background: rgba(0, 0, 0, 0.35);
+}
+
+
+.lightning-flash {
+  position: fixed;
+  inset: 0;
+  background: white;
+  opacity: 0;
+  z-index: -10;
+  animation: lightning 6s infinite;
+}
+
+@keyframes lightning {
+  0%, 96%, 100% { opacity: 0; }
+  97% { opacity: 0.8; }
+  98% { opacity: 0; }
+  99% { opacity: 0.6; }
+}
+
+
+@keyframes cloudDrift {
+  0% {
+    transform: scale(1.05) translateX(0);
+  }
+  100% {
+    transform: scale(1.05) translateX(-3%);
+  }
+}
+
+.animate-cloud-drift {
+  animation: cloudDrift 120s linear infinite alternate;
+}
