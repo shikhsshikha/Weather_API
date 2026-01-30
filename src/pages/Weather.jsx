@@ -83,7 +83,7 @@ function Weather() {
       <Background weatherType={weatherType} isDay={isDay} />
       <WeatherOverlay weatherType={weatherType} isDay={isDay} />
 
-      <div className="relative z-10 min-h-screen px-6 py-10 text-white space-y-10">
+      <div className="relative z-10 min-h-screen px-6 py-10 text-white space-y-10 max-sm:px-4 max-sm:space-y-8">
 
         {/* HERO */}
         <div className="text-center pt-14 pb-6">
@@ -93,7 +93,7 @@ function Weather() {
 
             {data && (
                 <>
-                <div className="text-[92px] font-thin leading-none">
+                <div className="text-[92px] max-sm:text-[64px] font-thin leading-none">
                     {Math.round(data.current.temp_c)}°
                 </div>
 
@@ -192,7 +192,7 @@ function Weather() {
 
         {/* FEELS LIKE + UV */}
         {data && (
-          <div className="max-w-md mx-auto grid grid-cols-2 gap-4">
+          <div className="max-w-md mx-auto grid grid-cols-2 gap-4 max-sm:grid-cols-1">
             <FeelsLikeCard
               actual={data.current.temp_c}
               feelsLike={data.current.feelslike_c}
@@ -220,7 +220,7 @@ function Weather() {
 
         {/* SUNSET + PRESSURE */}
         {data && (
-          <div className="max-w-md mx-auto grid grid-cols-2 gap-4">
+          <div className="max-w-md mx-auto grid grid-cols-2 gap-4 max-sm:grid-cols-1">
             <SunsetCard
               sunrise={data.forecast.forecastday[0].astro.sunrise}
               sunset={data.forecast.forecastday[0].astro.sunset}

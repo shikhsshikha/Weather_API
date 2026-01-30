@@ -10,7 +10,7 @@ function GlassCard({ children, variant = "mid", className= "" }) {
       <div className="absolute inset-0 rounded-3xl bg-white/20 blur-xl opacity-40" />
 
       <div
-        className={`relative rounded-3xl px-5 py-4 ${variants[variant]} ${className}`}
+        className={`relative rounded-3xl px-4 py-4 sm:px-5 sm:py-4 ${variants[variant]} ${className}`}
       >
         {children}
       </div>

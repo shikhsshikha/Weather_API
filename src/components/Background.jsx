@@ -42,7 +42,7 @@ function Background({ weatherType, isDay }) {
         loop
         muted
         playsInline
-        className="absolute inset-0 w-full h-full object-cover bg-video"
+        className="absolute inset-0 w-full h-full object-cover bg-video motion-reduce:hidden"
         src={videoSrc}
       />
     </div>

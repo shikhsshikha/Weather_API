@@ -56,7 +56,7 @@ function DailyForecast({ days, glassVariant }) {
             <div
               key={i}
               className="grid items-center py-3 text-md
-                        grid-cols-[8rem_3rem_4fr_4fr_2fr]"
+              grid-cols-[6rem_2rem_3fr_3fr_2fr] sm:grid-cols-[8rem_3rem_4fr_4fr_2fr]"
             >
 
               {/* DAY */}

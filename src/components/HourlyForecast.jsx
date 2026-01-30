@@ -29,7 +29,7 @@ function HourlyForecast({ days, glassVariant, summary }) {
 
       <div className="h-px bg-white/20 mb-4" />
 
-      <div className="flex gap-6 overflow-x-auto pb-2">
+      <div className="flex gap-5 overflow-x-auto pb-2 scrollbar-hide">
         {upcomingHours.map((h, i) => {
           const isNow =
           Math.abs(new Date(h.time) - now) < 30 * 60 * 1000;
