@@ -1,23 +1,17 @@
 html, body {
-  background-color: #0b1220; 
-  /* overflow-x: hidden; */
+  background-color: transparent;
 }
 
-.bg-video {
-  filter: brightness(0.95) saturate(1.4);
-  transition: opacity 0.2s ease-in-out;
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: #0b1220;
+  z-index: -1;
 }
 
 video {
-  transition: opacity 1.2s ease-in-out;
-}
-
-.fade-in {
-  opacity: 1;
-}
-
-.fade-out {
-  opacity: 0;
+  will-change: opacity;
 }
 
 .glass-card {
@@ -30,37 +24,4 @@ video {
   transition: background 0.4s ease, backdrop-filter 0.4s ease;
 }
 
-video[src*="night"] ~ .glass-card {
-  background: rgba(0, 0, 0, 0.35);
-}
 
-
-.lightning-flash {
-  position: fixed;
-  inset: 0;
-  background: white;
-  opacity: 0;
-  z-index: -10;
-  animation: lightning 6s infinite;
-}
-
-@keyframes lightning {
-  0%, 96%, 100% { opacity: 0; }
-  97% { opacity: 0.8; }
-  98% { opacity: 0; }
-  99% { opacity: 0.6; }
-}
-
-
-@keyframes cloudDrift {
-  0% {
-    transform: scale(1.05) translateX(0);
-  }
-  100% {
-    transform: scale(1.05) translateX(-3%);
-  }
-}
-
-.animate-cloud-drift {
-  animation: cloudDrift 120s linear infinite alternate;
-}

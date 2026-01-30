@@ -3,7 +3,6 @@ import Background from "../components/Background";
 import HourlyForecast from "../components/HourlyForecast";
 import DailyForecast from "../components/DailyForecast";
 import Loader from "../components/Loader";
-import WeatherOverlay from "../components/WeatherOverlay";
 import AirQualityCard from "../components/AirQualityCard";
 import FeelsLikeCard from "../components/FeelsLikeCard";
 import UVIndexCard from "../components/UVIndexCard";
@@ -12,6 +11,8 @@ import SunsetCard from "../components/SunsetCard";
 import PressureCard from "../components/PressureCard";
 import PrecipitationCard from "../components/PrecipitationCard";
 import { getHourlySummary } from "../utils/hourlySummary";
+import { resolveVideo } from "../utils/resolveVideo";
+import initialBg from "../assets/videos/initial-bg-vid.mp4";
 
 
 const API_KEY = "ca50b6a587ba4f3e95d84901262301";
@@ -64,6 +65,11 @@ function Weather() {
   const weatherType = data?.current.condition.text;
   const isDay = data?.current.is_day === 1;
 
+  const backgroundVideo = weatherType
+    ? resolveVideo(weatherType, isDay)
+    : initialBg;
+
+
   const glassVariant = (() => {
     if (!weatherType) return "mid";
     const t = weatherType.toLowerCase();
@@ -76,11 +82,9 @@ function Weather() {
 
   const hourlySummary = data ? getHourlySummary(data) : "";
   
-
   return (
     <>
-      <Background weatherType={weatherType} isDay={isDay} />
-      <WeatherOverlay weatherType={weatherType} isDay={isDay} />
+      <Background videoSrc={backgroundVideo} />
 
       <div className="relative z-10 min-h-screen px-6 py-10 text-white space-y-10 max-sm:px-4 max-sm:space-y-8">
 
