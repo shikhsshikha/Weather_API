@@ -15,6 +15,7 @@ import { resolveVideo } from "../utils/resolveVideo";
 import initialBg from "../assets/videos/initial-bg-vid.mp4";
 
 
+
 const API_KEY = "ca50b6a587ba4f3e95d84901262301";
 
 function Weather() {
@@ -82,6 +83,7 @@ function Weather() {
 
   const hourlySummary = data ? getHourlySummary(data) : "";
   
+
   return (
     <>
       <Background videoSrc={backgroundVideo} />

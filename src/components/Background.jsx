@@ -1,34 +1,50 @@
 import { useEffect, useRef, useState } from "react";
+import initialBg from "../assets/videos/initial-bg-vid.mp4";
 
 function Background({ videoSrc }) {
   const videoRef = useRef(null);
-  const [currentSrc, setCurrentSrc] = useState(videoSrc);
-  const [visible, setVisible] = useState(false);
+  const canvasRef = useRef(null);
+  const [currentSrc, setCurrentSrc] = useState(initialBg);
 
+  // Play initial video
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
 
     video.playbackRate = 0.2;
     video.play().catch(() => {});
-    setVisible(true);
   }, []);
 
+  // Handle video change WITHOUT blue flash
   useEffect(() => {
     if (!videoSrc || videoSrc === currentSrc) return;
 
-    setVisible(false);
+    const video = videoRef.current;
+    const canvas = canvasRef.current;
+    if (!video || !canvas) return;
 
-    const timeout = setTimeout(() => {
-      setCurrentSrc(videoSrc);
-      setVisible(true);
-    }, 300); 
+    const ctx = canvas.getContext("2d");
 
-    return () => clearTimeout(timeout);
-  }, [videoSrc, currentSrc]);
+    // Freeze last frame
+    canvas.width = video.videoWidth || window.innerWidth;
+    canvas.height = video.videoHeight || window.innerHeight;
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+    // Swap video AFTER freeze
+    video.src = videoSrc;
+    video.load();
+
+    video.oncanplay = () => {
+      video.play().catch(() => {});
+      canvas.style.opacity = "0";
+    };
+
+    setCurrentSrc(videoSrc);
+  }, [videoSrc]);
 
   return (
     <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none">
+      {/* VIDEO */}
       <video
         ref={videoRef}
         src={currentSrc}
@@ -37,9 +53,14 @@ function Background({ videoSrc }) {
         muted
         playsInline
         preload="auto"
-        className={`absolute inset-0 w-full h-full object-cover
-          transition-opacity duration-500 ease-in-out
-          ${visible ? "opacity-100" : "opacity-0"}`}
+        className="absolute inset-0 w-full h-full object-cover"
+      />
+
+      {/* FREEZE FRAME */}
+      <canvas
+        ref={canvasRef}
+        className="absolute inset-0 w-full h-full transition-opacity duration-500"
+        style={{ opacity: 1 }}
       />
     </div>
   );
