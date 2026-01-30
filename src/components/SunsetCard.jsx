@@ -38,7 +38,7 @@ function SunsetCard({ sunrise, sunset, glassVariant }) {
         </p>
       </div>
 
-      <p className="text-3xl leading-none mb-8">
+      <p className="text-3xl leading-none mb-10">
         {sunset}
       </p>
 

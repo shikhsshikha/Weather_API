@@ -37,7 +37,7 @@ function WindCard({ speed, gust, degree, glassVariant }) {
         <p className="text-md uppercase tracking-wide">Wind</p>
       </div>
 
-      <div className="grid grid-cols-[1fr_200px] gap-10 items-center max-sm:grid-cols-1 max-sm:gap-6"> 
+      <div className="grid grid-cols-1 gap-6 items-center sm:grid-cols-[1fr_200px] sm:gap-10">
 
         <div className="text-md divide-y divide-white/25">
           <div className="flex justify-between py-2">
@@ -60,7 +60,7 @@ function WindCard({ speed, gust, degree, glassVariant }) {
         </div>
 
         {/* COMPASS */}
-        <div className="relative w-36 h-36 ml-auto max-sm:mx-auto max-sm:ml-0">
+        <div className="relative w-36 h-36 mx-auto sm:ml-auto sm:mx-0">
 
           <div className="absolute inset-0 rounded-full border border-white/30" />
 

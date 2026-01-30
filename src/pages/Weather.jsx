@@ -3,7 +3,6 @@ import Background from "../components/Background";
 import HourlyForecast from "../components/HourlyForecast";
 import DailyForecast from "../components/DailyForecast";
 import Loader from "../components/Loader";
-import GlassCard from "../components/GlassCard";
 import WeatherOverlay from "../components/WeatherOverlay";
 import AirQualityCard from "../components/AirQualityCard";
 import FeelsLikeCard from "../components/FeelsLikeCard";
@@ -150,7 +149,12 @@ function Weather() {
             GET WEATHER
           </button>
 
-          {loading && <Loader />}
+          {loading && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/20 backdrop-blur-sm">
+              <Loader />
+            </div>
+          )}
+
           {error && (
             <p className="text-center text-sm text-red-300">
               {error}

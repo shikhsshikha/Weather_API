@@ -1,5 +1,6 @@
 html, body {
-  overflow-x: hidden;
+  background-color: #0b1220; 
+  /* overflow-x: hidden; */
 }
 
 .bg-video {

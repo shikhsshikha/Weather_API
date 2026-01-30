@@ -1,4 +1,5 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+
 import cloudyDay from "../assets/videos/cloudy-day.mp4";
 import cloudyNight from "../assets/videos/cloudy-night.mp4";
 import sunnyDay from "../assets/videos/sunny-day.mp4";
@@ -10,41 +11,72 @@ import starryNight from "../assets/videos/starry-night.mp4";
 import thunderstorm from "../assets/videos/thunderstorm.mp4";
 import initialBg from "../assets/videos/initial-bg-vid.mp4";
 
+function resolveVideo(weatherType, isDay) {
+  if (!weatherType) return initialBg;
+
+  const type = weatherType.toLowerCase();
+  if (type.includes("thunder")) return thunderstorm;
+  if (type.includes("snow")) return isDay ? snowfallDay : snowfallNight;
+  if (type.includes("rain")) return isDay ? rainyDay : rainyNight;
+  if (type.includes("cloud")) return isDay ? cloudyDay : cloudyNight;
+  if (!isDay) return starryNight;
+  if (type.includes("sun") || type.includes("clear")) return sunnyDay;
+
+  return initialBg;
+}
 
 function Background({ weatherType, isDay }) {
-  const videoRef = useRef(null);
+  const [currentSrc, setCurrentSrc] = useState(initialBg);
+  const [nextSrc, setNextSrc] = useState(null);
+  const [showNext, setShowNext] = useState(false);
 
-  let videoSrc = initialBg;
-
-
-  if (weatherType) {
-    const type = weatherType.toLowerCase();
-
-    if (type.includes("thunder")) videoSrc = thunderstorm;
-    else if (type.includes("snow")) videoSrc = isDay ? snowfallDay : snowfallNight;
-    else if (type.includes("rain")) videoSrc = isDay ? rainyDay : rainyNight;
-    else if (type.includes("cloud")) videoSrc = isDay ? cloudyDay : cloudyNight;
-    else if (!isDay) videoSrc = starryNight;
-    else if (type.includes("sun") || type.includes("clear")) videoSrc = sunnyDay;
-  }
+  const nextRef = useRef(null);
 
   useEffect(() => {
-    if (videoRef.current) {
-      videoRef.current.playbackRate = 0.6; 
-    }
-  }, [videoSrc]);
+    const newSrc = resolveVideo(weatherType, isDay);
+
+    if (newSrc === currentSrc) return;
+
+    setNextSrc(newSrc);
+    setShowNext(false);
+  }, [weatherType, isDay, currentSrc]);
 
   return (
-    <div className="fixed inset-0 -z-30 overflow-hidden">
+    <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none">
+      {/* CURRENT VIDEO (never disappears) */}
       <video
-        ref={videoRef}
         autoPlay
         loop
         muted
         playsInline
-        className="absolute inset-0 w-full h-full object-cover bg-video motion-reduce:hidden"
-        src={videoSrc}
+        preload="auto"
+        src={currentSrc}
+        className="absolute inset-0 w-full h-full object-cover"
       />
+
+      {/* NEXT VIDEO (fades in) */}
+      {nextSrc && (
+        <video
+          ref={nextRef}
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="auto"
+          src={nextSrc}
+          onLoadedData={() => {
+            setShowNext(true);
+            setTimeout(() => {
+              setCurrentSrc(nextSrc);
+              setNextSrc(null);
+              setShowNext(false);
+            }, 600);
+          }}
+          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${
+            showNext ? "opacity-100" : "opacity-0"
+          }`}
+        />
+      )}
     </div>
   );
 }
