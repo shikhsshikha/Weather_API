@@ -38,7 +38,7 @@ function Background({ videoSrc }) {
     if (!current) return;
 
     current.currentTime = 0;
-    current.playbackRate = 0.2;
+    current.playbackRate = 0.6;
     current.play().catch(() => {});
   }, [active]);
 
