@@ -23,6 +23,8 @@ function Weather() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [backgroundVideo, setBackgroundVideo] = useState(initialBg);
+
 
   useEffect(() => {
     const handleScroll = () => {
@@ -32,6 +34,8 @@ function Weather() {
         `${offset * 0.15}px`
       );
     };
+
+  
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
@@ -66,9 +70,25 @@ function Weather() {
   const weatherType = data?.current.condition.text;
   const isDay = data?.current.is_day === 1;
 
-  const backgroundVideo = weatherType
-    ? resolveVideo(weatherType, isDay)
-    : initialBg;
+    useEffect(() => {
+      if (!data) return;
+
+      const weatherVideo = resolveVideo(
+        data.current.condition.text,
+        data.current.is_day === 1
+      );
+
+      if (!weatherVideo) return;
+
+      const preloadVideo = document.createElement("video");
+      preloadVideo.src = weatherVideo;
+      preloadVideo.muted = true;
+      preloadVideo.preload = "auto";
+
+      preloadVideo.oncanplay = () => {
+        setBackgroundVideo(weatherVideo); 
+      };
+    }, [data]);
 
 
   const glassVariant = (() => {
@@ -156,7 +176,8 @@ function Weather() {
           </button>
 
           {loading && (
-            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/20 backdrop-blur-sm">
+            <div className="fixed inset-0 z-50 flex items-center justify-center
+                            bg-black/10 backdrop-blur-sm">
               <Loader />
             </div>
           )}
