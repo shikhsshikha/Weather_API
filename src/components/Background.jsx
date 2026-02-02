@@ -34,6 +34,7 @@ function Background({ videoSrc }) {
     if (!nextVideo) return;
 
     nextVideo.src = videoSrc;
+    nextVideo.load();
     nextVideo.muted = true;
     nextVideo.playbackRate = 0.5;
     nextVideo.currentTime = 0;
