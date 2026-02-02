@@ -10,16 +10,17 @@ function Background({ videoSrc }) {
   const [srcA, setSrcA] = useState(videoSrc);
   const [srcB, setSrcB] = useState(null);
 
-
   useEffect(() => {
     const v = videoA.current;
     if (!v) return;
 
     v.playbackRate = 0.5;
-    const playPromise = v.play();
-    if (playPromise) playPromise.catch(() => {});
-  }, []);
+    v.muted = true;
 
+    requestAnimationFrame(() => {
+      v.play().catch(() => {});
+    });
+  }, []);
 
   useEffect(() => {
     if (!videoSrc) return;
@@ -33,18 +34,21 @@ function Background({ videoSrc }) {
     if (!nextVideo) return;
 
     nextVideo.src = videoSrc;
+    nextVideo.muted = true;
     nextVideo.playbackRate = 0.5;
     nextVideo.currentTime = 0;
 
-    const onCanPlay = () => {
-      nextVideo.play().catch(() => {});
-      setActive(isAActive ? "B" : "A");
+    const onReady = () => {
+      requestAnimationFrame(() => {
+        nextVideo.play().catch(() => {});
+        setActive(isAActive ? "B" : "A");
+      });
     };
 
-    nextVideo.addEventListener("canplay", onCanPlay, { once: true });
+    nextVideo.addEventListener("loadeddata", onReady, { once: true });
 
     return () => {
-      nextVideo.removeEventListener("canplay", onCanPlay);
+      nextVideo.removeEventListener("loadeddata", onReady);
     };
   }, [videoSrc]);
 
@@ -56,6 +60,7 @@ function Background({ videoSrc }) {
         muted
         loop
         playsInline
+        autoPlay
         preload="auto"
         className={`absolute inset-0 w-full h-full object-cover
           transition-opacity duration-800 ease-in-out
@@ -69,6 +74,7 @@ function Background({ videoSrc }) {
           muted
           loop
           playsInline
+          autoPlay
           preload="auto"
           className={`absolute inset-0 w-full h-full object-cover
             transition-opacity duration-800 ease-in-out
